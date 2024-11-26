@@ -92,140 +92,194 @@
 
 // class
 
-class Car {
-  constructor(brand, model, year) {
-    this.brand = brand;
-    this.model = model;
-    this.year = year;
+// class Car {
+//   constructor(brand, model, year) {
+//     this.brand = brand;
+//     this.model = model;
+//     this.year = year;
+//   }
+
+//   displayInfo() {
+//     return `${this.brand} ${this.model}, ${this.year}-yil`;
+//   }
+// }
+
+// const car1 = new Car("Toyota", "Supra", 1992);
+// const car2 = new Car("Honda", "Monalisa", 2002);
+
+// console.log(car1.displayInfo());
+// console.log(car2.displayInfo());
+
+// // inheritance
+
+// class Animal {
+//   constructor(name) {
+//     this.name = name;
+//   }
+
+//   sound() {
+//     console.log(`${this.name} nimadir dedi`);
+//   }
+// }
+
+// class Dog extends Animal {
+//   constructor(name, breed) {
+//     super(name);
+//     this.breed = breed;
+//   }
+
+//   bark() {
+//     console.log(`${this.name} nima devossan`);
+//   }
+// }
+
+// const myDog = new Dog("Rex", "Labrador");
+// myDog.sound();
+// myDog.bark();
+
+// // polymorfizm
+
+// class Animal {
+//   speak() {
+//     console.log("Hayvon nimadir qivotti");
+//   }
+// }
+
+// class Dog extends Animal {
+//   speak() {
+//     console.log("It huradimi rostan???");
+//   }
+// }
+
+// class Cat extends Animal {
+//   speak() {
+//     console.log("Mushuk miyovlaydida kaneshna akkilamaydiku");
+//   }
+// }
+
+// const animals = [new Animal(), new Dog(), new Cat()];
+// animals.forEach((animal) => animal.speak());
+
+// // abstrakshin
+
+// class Shape {
+//   constructor(name) {
+//     if (this.constructor === Shape) {
+//       throw new Error("Abstrakt klassdan obyekt yaratib bo'lmaydi.");
+//     }
+//     this.name = name;
+//   }
+
+//   getArea() {
+//     throw new Error("getArea() metodi o'rnatilishi kerak.");
+//   }
+// }
+
+// class Circle extends Shape {
+//   constructor(radius) {
+//     super("Circle");
+//     this.radius = radius;
+//   }
+
+//   getArea() {
+//     return Math.PI * this.radius ** 2;
+//   }
+// }
+
+// const circle = new Circle(5);
+// console.log(`${circle.name} maydoni: ${circle.getArea().toFixed(2)}`);
+
+// // inkapsulayshin
+
+// class BankAccount {
+//   #balance;
+
+//   constructor(initialBalance) {
+//     this.#balance = initialBalance;
+//   }
+
+//   deposit(amount) {
+//     if (amount > 0) {
+//       this.#balance += amount;
+//       console.log(`Hisobingizga ${amount} qo'shildi. Hozirgi balans: ${this.#balance}`);
+//     } else {
+//       console.log("Miqdor noto'g'ri.");
+//     }
+//   }
+
+//   withdraw(amount) {
+//     if (amount > 0 && amount <= this.#balance) {
+//       this.#balance -= amount;
+//       console.log(`Hisobingizdan ${amount} yechildi. Hozirgi balans: ${this.#balance}`);
+//     } else {
+//       console.log("Yetarli mablag' mavjud emas yoki miqdor noto'g'ri.");
+//     }
+//   }
+
+//   getBalance() {
+//     return this.#balance;
+//   }
+// }
+
+// const account = new BankAccount(100);
+// account.deposit(50);
+// account.withdraw(30);
+// console.log(account.getBalance());
+
+class Person {
+  constructor(firstName, lastName, age) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
   }
 
-  displayInfo() {
-    return `${this.brand} ${this.model}, ${this.year}-yil`;
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 }
 
-const car1 = new Car("Toyota", "Supra", 1992);
-const car2 = new Car("Honda", "Monalisa", 2002);
-
-console.log(car1.displayInfo());
-console.log(car2.displayInfo()); 
-
-
-// inheritance
-
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
-
-  sound() {
-    console.log(`${this.name} nimadir dedi`);
+class Student extends Person {
+  constructor(firstName, lastName, age, course, gpa) {
+    super(firstName, lastName, age);
+    this.course = course;
+    this.gpa = gpa;
   }
 }
 
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name); 
-    this.breed = breed;
-  }
-
-  bark() {
-    console.log(`${this.name} nima devossan`);
+class Teacher extends Person {
+  constructor(firstName, lastName, age, subject, experience) {
+    super(firstName, lastName, age);
+    this.subject = subject;
+    this.experience = experience;
   }
 }
 
-const myDog = new Dog("Rex", "Labrador");
-myDog.sound();
-myDog.bark();
+const students = [
+  new Student("Abdulloh", "Ismailov", 20, "Computer Science", 3.8),
+  new Student("Sarvar", "Karimov", 21, "Mathematics", 3.5),
+  new Student("Shahlo", "Davronova", 19, "Physics", 3.9),
+];
 
+const teachers = [
+  new Teacher("Said", "Normatov", 40, "Mathematics", 15),
+  new Teacher("Kamola", "Yusufova", 35, "Physics", 10),
+  new Teacher("Rustam", "Karimov", 45, "Computer Science", 20),
+];
 
+console.log("Talabalar ro'yxati:");
+students.forEach((student) => {
+  console.log(
+    `Ism: ${student.getFullName()}, Yosh: ${student.age}, Kurs: ${
+      student.course
+    }, GPA: ${student.gpa}`
+  );
+});
 
-// polymorfizm
-
-class Animal {
-  speak() {
-    console.log("Hayvon nimadir qivotti");
-  }
-}
-
-class Dog extends Animal {
-  speak() {
-    console.log("It huradimi rostan???");
-  }
-}
-
-class Cat extends Animal {
-  speak() {
-    console.log("Mushuk miyovlaydida kaneshna akkilamaydiku");
-  }
-}
-
-const animals = [new Animal(), new Dog(), new Cat()];
-animals.forEach((animal) => animal.speak());
-
-// abstrakshin
-
-class Shape {
-  constructor(name) {
-    if (this.constructor === Shape) {
-      throw new Error("Abstrakt klassdan obyekt yaratib bo'lmaydi.");
-    }
-    this.name = name;
-  }
-
-  getArea() {
-    throw new Error("getArea() metodi o'rnatilishi kerak.");
-  }
-}
-
-class Circle extends Shape {
-  constructor(radius) {
-    super("Circle");
-    this.radius = radius;
-  }
-
-  getArea() {
-    return Math.PI * this.radius ** 2;
-  }
-}
-
-const circle = new Circle(5);
-console.log(`${circle.name} maydoni: ${circle.getArea().toFixed(2)}`);
-
-
-// inkapsulayshin
-
-class BankAccount {
-  #balance; 
-
-  constructor(initialBalance) {
-    this.#balance = initialBalance;
-  }
-
-  deposit(amount) {
-    if (amount > 0) {
-      this.#balance += amount;
-      console.log(`Hisobingizga ${amount} qo'shildi. Hozirgi balans: ${this.#balance}`);
-    } else {
-      console.log("Miqdor noto'g'ri.");
-    }
-  }
-
-  withdraw(amount) {
-    if (amount > 0 && amount <= this.#balance) {
-      this.#balance -= amount;
-      console.log(`Hisobingizdan ${amount} yechildi. Hozirgi balans: ${this.#balance}`);
-    } else {
-      console.log("Yetarli mablag' mavjud emas yoki miqdor noto'g'ri.");
-    }
-  }
-
-  getBalance() {
-    return this.#balance;
-  }
-}
-
-const account = new BankAccount(100);
-account.deposit(50); 
-account.withdraw(30);
-console.log(account.getBalance());
+console.log("\nO'qituvchilar ro'yxati:");
+teachers.forEach((teacher) => {
+  console.log(
+    `Ism: ${teacher.getFullName()}, Yosh: ${teacher.age}, Fan: ${
+      teacher.subject
+    }, Tajriba: ${teacher.experience} yil`
+  );
+});
