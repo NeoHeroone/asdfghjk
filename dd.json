@@ -1,0 +1,28 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@mail.com",
+      "num": "(171) 555-2222"
+    },
+    {
+      "id": 2,
+      "name": "Peter Parker",
+      "email": "peterparker@mail.com",
+      "num": "(313) 555-5735"
+    },
+    {
+      "id": 3,
+      "name": "Fran Wilson",
+      "email": "franwilson@mail.com",
+      "num": "(503) 555-9931"
+    },
+    {
+      "id": "fdd0",
+      "name": "asda",
+      "email": "adwd@mail.com",
+      "num": "1234"
+    }
+  ]
+}

@@ -1,71 +1,111 @@
-// todo: 1-misol
+let thead = document.querySelector("thead");
+let tbody = document.querySelector("tbody");
+let form = document.querySelector("form");
+let addNewBtn = document.getElementById("addNewBtn");
+let formTitle = document.getElementById("formTitle");
+let submitBtn = document.getElementById("submitBtn");
 
-// class Car {
-//   constructor(brand) {
-//     this.brand = brand;
-//   }
+const API_URL = "http://localhost:3001/employees";
 
-//   calculateSpeed(distance, time) {
-//     return `${this.brand} tezlik: ${distance / time} km/soat`;
-//   }
-// }
+let editId = null;
 
-// const car1 = new Car("Toyota");
-// const car2 = new Car("Honda");
+const createTableHead = async () => {
+  const response = await fetch(API_URL);
+  const datas = await response.json();
+  if (datas.length) {
+    thead.innerHTML = `<tr>${Object.keys(datas[0])
+      .map((key) => `<th>${key[0].toUpperCase() + key.slice(1)}</th>`)
+      .join("")}<th>Action</th></tr>`;
+  }
+};
 
-// const speed = car1.calculateSpeed.call(car2, 100, 2); 
-// alert(speed); 
+const renderTableData = async () => {
+  const response = await fetch(API_URL);
+  const datas = await response.json();
+  tbody.innerHTML = datas.length
+    ? datas
+        .map(
+          (val) => `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.email}</td>
+        <td>${val.num}</td>
+        <td>
+          <button onclick="onEdit(${val.id})">🖍️</button>
+          <button onclick="onDelete(${val.id})">🗑️</button>
+        </td>
+      </tr>`
+        )
+        .join("")
+    : `<tr><td colspan="5">No data found</td></tr>`;
+};
 
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  let [nameText, emailText, numText] = [...form.querySelectorAll("input")].map(
+    (input) => input.value
+  );
+  if (!nameText || !emailText || !numText)
+    return alert("Please fill in all fields");
 
+  const newData = {
+    name: nameText,
+    email: emailText,
+    num: numText,
+  };
 
+  if (editId !== null) {
+    await fetch(`${API_URL}/${editId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newData),
+    });
+    editId = null;
+    formTitle.textContent = "Add New Data";
+    submitBtn.textContent = "Add New";
+  } else {
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newData),
+    });
+  }
 
-// todo: 2-misol
+  form.reset();
+  form.classList.add("hidden");
+  renderTableData();
+});
 
-// class age {
-//   static findYoungest(ages) {
-//     return Math.min.apply(null, ages);
-//   }
-// }
+window.onDelete = async (id) => {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+  renderTableData();
+};
 
-// const ages = [25, 30, 18, 22, 40];
-// const youngest = age.findYoungest(ages);
-// alert(`Eng kichik yosh: ${youngest}`);
+window.onEdit = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`);
+  const val = await response.json();
 
+  form.classList.remove("hidden");
+  formTitle.textContent = "Edit Data";
+  submitBtn.textContent = "Update";
+  form.querySelectorAll("input")[0].value = val.name;
+  form.querySelectorAll("input")[1].value = val.email;
+  form.querySelectorAll("input")[2].value = val.num;
+  editId = id;
+};
 
+addNewBtn.addEventListener("click", () => {
+  form.classList.toggle("hidden");
+  if (form.classList.contains("hidden")) form.reset();
+  formTitle.textContent = "Add New Data";
+  submitBtn.textContent = "Add New";
+  editId = null;
+});
 
-
-// todo: 3-misol
-
-// class Product {
-//   constructor(price) {
-//     this.price = price;
-//   }
-//   applyDiscount(discount) {
-//     return this.price - (this.price * discount) / 100;
-//   }
-// }
-
-// const product = new Product(200);
-// const tenPercentDiscount = product.applyDiscount.bind(product, 10);
-// alert(tenPercentDiscount()); 
-
-
-
-// todo: 4-misol
-
-// class Person {
-//   constructor(name, role) {
-//     this.name = name;
-//     this.role = role;
-//   }
-//   greet(greeting) {
-//     return `${greeting}, men ${this.name}, ${this.role}!`;
-//   }
-// }
-
-// let userName = prompt('Please enter your username');
-// let userRole = prompt('Please enter your role');
-// const person1 = new Person(userName, userRole);
-// const person2 = new Person('Abdulloh', 'Developer');
-// const greetUser = person1.greet.call(person2, "Salom");
-// alert(greetUser);
+(async () => {
+  await createTableHead();
+  await renderTableData();
+})();
